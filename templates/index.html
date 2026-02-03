@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .hero-section { background: linear-gradient(135deg, #198754 0%, #0d6efd 100%); color: white; padding: 60px 0; margin-bottom: -100px; }
+        .main-card { border: none; border-radius: 15px; }
+        .btn-success { background-color: #198754; border: none; }
+        .btn-success:hover { background-color: #157347; }
+    </style>
+    <title>EditingMonkey - Universal File Converter</title>
+</head>
+<body class="bg-light">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/">🐒 EditingMonkey</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/how">How to Use</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <a href="/login" class="btn btn-outline-light btn-sm mx-1 px-3">Login</a>
+                    <a href="/signup" class="btn btn-warning btn-sm mx-1 px-3 fw-bold">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero-section text-center">
+        <div class="container">
+            <h1 class="display-4 fw-bold">The Ultimate File Converter</h1>
+            <p class="lead">Convert images to Word, PDF, Excel, and more in seconds.</p>
+        </div>
+    </div>
+
+    <div class="container mb-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-lg main-card">
+                    <div class="card-body p-5">
+                        
+                        {% with messages = get_flashed_messages() %}
+                          {% if messages %}
+                            {% for message in messages %}
+                              <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                              </div>
+                            {% endfor %}
+                          {% endif %}
+                        {% endwith %}
+
+                        <form action="/edit" method="post" enctype="multipart/form-data">
+                            <div class="mb-4">
+                                <label class="form-label fw-bold text-secondary">1. UPLOAD YOUR FILE</label>
+                                <input class="form-control form-control-lg border-2" type="file" name="file" required>
+                                <div class="form-text">Supported formats: JPG, PNG, JPEG, GIF</div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label fw-bold text-secondary">2. CHOOSE OUTPUT FORMAT</label>
+                                <select class="form-select form-select-lg border-2" name="operation">
+                                    <optgroup label="✨ Most Popular">
+                                        <option value="pdf">Convert to PDF Document</option>
+                                        <option value="docx">Convert to Microsoft Word (.docx)</option>
+                                    </optgroup>
+                                    <optgroup label="🖼️ Image Editing">
+                                        <option value="png">Convert to PNG (Lossless)</option>
+                                        <option value="grayscale">Convert to Black & White</option>
+                                    </optgroup>
+                                    <optgroup label="📊 Data & Sheets">
+                                        <option value="xlsx">Export as Excel Spreadsheet</option>
+                                        <option value="csv">Export as CSV File</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-success btn-lg fw-bold py-3 shadow-sm">
+                                    🚀 PROCESS AND DOWNLOAD
+                                </button>
+                            </div>
+                        </form>
+
+                        {% if processed_file %}
+                        <div class="mt-5 text-center p-4 border border-success rounded-3 bg-light">
+                            <h5 class="text-success fw-bold">✨ Conversion Complete!</h5>
+                            <p class="text-muted small">Your file is ready for download.</p>
+                            <a href="{{ url_for('static', filename='processed/' + processed_file) }}" class="btn btn-primary btn-lg px-5 shadow" download>
+                                📥 Download File
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center text-muted py-4">
+        <p>© 2026 EditingMonkey. Fast. Free. Professional.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
